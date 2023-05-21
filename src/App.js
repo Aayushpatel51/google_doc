@@ -1,23 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import IndexPage from './components/IndexPage/IndexPage';
+import Login from './components/Auth/Login'
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
+import { useSelector } from 'react-redux'
+import { selectUserName } from './redux/userSlice'
+import Docs from './components/Docs/Docs';
 
 function App() {
+  const userName = useSelector(selectUserName);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <BrowserRouter>
+        {
+          !userName ?
+            <>
+            <Routes>
+              <Route path="/" element={<Login />} />
+            </Routes>
+            </> : <>
+            <Routes>
+              <Route path="/" element={<IndexPage />} />
+              <Route path="/doc/:id" element={<Docs />}/> 
+            </Routes>
+            </>
+        }
+      </BrowserRouter>
     </div>
   );
 }
